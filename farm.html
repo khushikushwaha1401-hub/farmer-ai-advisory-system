@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Farmer AI Advisory System</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#eef4ec;
+}
+
+/* RIGHT GREEN BAR */
+.right-bar{
+  position:fixed;
+  right:0;
+  top:0;
+  width:300px;
+  height:100%;
+  background:#2e7d32;
+  color:white;
+  padding:30px;
+}
+
+.right-bar h1{
+  font-size:26px;
+  margin-bottom:6px;
+}
+
+.right-bar p{
+  font-size:14px;
+  margin-top:0;
+}
+
+.badge{
+  background:#e8f5e9;
+  color:#2e7d32;
+  display:inline-block;
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:13px;
+  margin:12px 0;
+}
+
+/* MAIN AREA */
+.main{
+  margin-right:320px;
+  padding:40px;
+}
+
+.card{
+  background:white;
+  border-radius:14px;
+  padding:25px;
+  max-width:950px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
+}
+
+/* AI RESPONSE */
+.response{
+  background:#e8f5e9;
+  border-radius:12px;
+  padding:15px;
+  min-height:350px;
+}
+
+.response h3{
+  margin-top:0;
+}
+
+/* QUESTION AREA */
+textarea{
+  width:100%;
+  height:100px;
+  padding:10px;
+  font-size:15px;
+}
+
+select, button{
+  padding:10px 14px;
+  margin-top:10px;
+  font-size:14px;
+}
+
+.ask{
+  background:#2e7d32;
+  color:white;
+  border:none;
+  border-radius:6px;
+}
+
+.clear{
+  background:#888;
+  color:white;
+  border:none;
+  border-radius:6px;
+}
+
+.voice{
+  background:#4caf50;
+  color:white;
+  border:none;
+  border-radius:6px;
+}
+
+.q{
+  background:white;
+  padding:8px;
+  border-radius:6px;
+  margin-top:10px;
+}
+
+.a{
+  background:#f1f8e9;
+  padding:8px;
+  border-radius:6px;
+}
+
+footer{
+  text-align:center;
+  margin-top:20px;
+  font-size:12px;
+  color:#666;
+}
+</style>
+</head>
+
+<body>
+
+<!-- RIGHT PANEL -->
+<div class="right-bar">
+  <h1>🌱 Farmer AI Advisory System</h1>
+  <p>Instant Smart Farming Guidance Powered by AI</p>
+  <div class="badge">Powered by Google AI (Gemini)</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+  <div class="card">
+
+    <!-- AI RESPONSE PANEL -->
+    <div class="response">
+      <h3>🤖 AI Response</h3>
+      <div id="chat">Your AI-based advisory will appear here.</div>
+    </div>
+
+    <!-- QUESTION PANEL -->
+    <div>
+      <h3>Ask Your Farming Question</h3>
+
+      <select id="lang">
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="mr">मराठी</option>
+      </select>
+
+      <textarea id="question" placeholder="Example: Konsi fasal black soil me acchi hoti hai?"></textarea>
+
+      <br>
+      <button class="ask" onclick="askAI()">Get AI Advice</button>
+      <button class="voice" onclick="startVoice()">🎤 Voice</button>
+      <button class="clear" onclick="clearInput()">Clear</button>
+    </div>
+
+  </div>
+
+  <footer>
+    Built for Tech-Sprint Hackathon | GDG
+  </footer>
+</div>
+
+<script>
+function askAI(){
+  let q=document.getElementById("question").value;
+  let lang=document.getElementById("lang").value;
+  if(q==="") return;
+
+  let chat=document.getElementById("chat");
+  chat.innerHTML+=`<div class="q"><b>Farmer:</b> ${q}</div>`;
+
+  setTimeout(()=>{
+    chat.innerHTML+=`<div class="a"><b>AI:</b> ${getAnswer(q,lang)}</div>`;
+  },700);
+
+  document.getElementById("question").value="";
+}
+
+function clearInput(){
+  document.getElementById("question").value="";
+}
+
+/* FIXED DEMO ANSWERS */
+function getAnswer(q,lang){
+  q=q.toLowerCase();
+
+  /* Q1: Black soil */
+  if(q.includes("black") || q.includes("kali") || q.includes("काली")){
+    if(lang==="hi")
+      return "काली मिट्टी में कपास, सोयाबीन, ज्वार, गेहूं और चना जैसी फसलें बहुत अच्छी होती हैं क्योंकि यह मिट्टी नमी को लंबे समय तक बनाए रखती है।";
+    if(lang==="mr")
+      return "काळ्या जमिनीत कापूस, सोयाबीन, ज्वारी, गहू आणि हरभरा ही पिके चांगली होतात.";
+    return "Black soil is ideal for cotton, soybean, jowar, wheat and chickpea due to high moisture retention.";
+  }
+
+  /* Q2: Summer profitable crop */
+  if(q.includes("summer") || q.includes("garmi") || q.includes("उन्हाळा")){
+    if(lang==="hi")
+      return "गर्मी के मौसम में मूंग, उड़द, मक्का, बाजरा और तरबूज जैसी फसलें बाजार में अच्छा मुनाफा देती हैं।";
+    if(lang==="mr")
+      return "उन्हाळ्यात मूग, उडीद, मका, बाजरी आणि कलिंगड ही पिके फायदेशीर ठरतात.";
+    return "In summer season, crops like moong, urad, maize, bajra and watermelon give good market returns.";
+  }
+
+  /* Q3: Winter demand */
+  if(q.includes("winter") || q.includes("sardi") || q.includes("हिवाळा")){
+    if(lang==="hi")
+      return "सर्दियों में गेहूं, सरसों, चना, मटर और हरी सब्जियों की मांग बाजार में अधिक होती है।";
+    if(lang==="mr")
+      return "हिवाळ्यात गहू, मोहरी, हरभरा, वाटाणा आणि हिरव्या भाज्यांची मागणी वाढते.";
+    return "During winter, wheat, mustard, chickpea, peas and green vegetables have high market demand.";
+  }
+
+  /* DEFAULT */
+  if(lang==="hi")
+    return "कृपया फसल, मौसम या मिट्टी से जुड़ा प्रश्न पूछें।";
+  if(lang==="mr")
+    return "कृपया पीक, हंगाम किंवा जमिनीशी संबंधित प्रश्न विचारा.";
+  return "Please ask a question related to crop, season or soil.";
+}
+
+/* VOICE INPUT */
+function startVoice(){
+  if(!('webkitSpeechRecognition' in window)){
+    alert("Voice input supported only in Chrome");
+    return;
+  }
+
+  let lang=document.getElementById("lang").value;
+  let rec=new webkitSpeechRecognition();
+
+  rec.lang = lang==="hi" ? "hi-IN" : lang==="mr" ? "mr-IN" : "en-IN";
+  rec.start();
+
+  rec.onresult=function(e){
+    document.getElementById("question").value=e.results[0][0].transcript;
+  }
+}
+</script>
+
+</body>
+</html>
